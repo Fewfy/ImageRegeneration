@@ -16,11 +16,31 @@ Mat composit(Mat srcA, Mat srcB, Mat srcC) {
 }
 
 int main() {
-	Mat srcA = imread("data/A.png");
 	Mat srcB = imread("data/B.png");
-	Mat srcC = imread("data/C.png");
-	imshow("A", srcA);
+	imshow("origin", srcB);
+	float a = 0.5;
+	float lamda = 0.2;
+	for (int t = 0; t < 300; t++) {
+		for (int i = 1; i < srcB.rows-1; i++) {
+			for (int j = 1; j < srcB.cols-1; j++) {
+				//ÐèÒªÐÞ¸´
+				if (srcB.ptr<float>(i)[j] == 0.0 || srcB.ptr<float>(i)[j] == -0.0) {
+					float Uo = srcB.ptr<float>(i)[j];
+					float Un = srcB.ptr<float>(i - 1)[j];
+					float Ue = srcB.ptr<float>(i)[j + 1];
+					float Us = srcB.ptr<float>(i + 1)[j];
+					float Uw = srcB.ptr<float>(i)[j - 1];
+
+					float UNE = srcB.ptr<float>(i - 1)[j + 1];
+					float UNW = srcB.ptr<float>(i - 1)[j - 1];
+					float USE = srcB.ptr<float>(i + 1)[j + 1];
+					float USW = srcB.ptr<float>(i + 1)[j - 1];
+				}
+			}
+		}
+	}
+
+
 	imshow("B", srcB);
-	imshow("C", srcC);
 	waitKey(0);
 }

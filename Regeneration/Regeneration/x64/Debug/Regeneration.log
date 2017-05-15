@@ -3,5 +3,6 @@ d:\opencv\build\include\opencv2\core\mat.hpp(1965): warning C4819: 该文件包�
 d:\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+d:\人工智能\imageregeneration\regeneration\regeneration\main.cpp(22): warning C4305: “初始化”: 从“double”到“float”截断
   Regeneration.vcxproj -> D:\人工智能\ImageRegeneration\Regeneration\x64\Debug\Regeneration.exe
   Regeneration.vcxproj -> D:\人工智能\ImageRegeneration\Regeneration\x64\Debug\Regeneration.pdb (Full PDB)
