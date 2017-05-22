@@ -15,8 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="gradientcalculator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="inpainter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="restoration.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gradientcalculator.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="inpainter.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

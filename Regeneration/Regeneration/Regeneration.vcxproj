@@ -18,6 +18,15 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="gradientcalculator.cpp" />
+    <ClCompile Include="inpainter.cpp" />
+    <ClCompile Include="restoration.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gradientcalculator.h" />
+    <ClInclude Include="inpainter.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C9835C86-F194-46B7-A632-F9D7B73A16C7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -145,9 +154,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
