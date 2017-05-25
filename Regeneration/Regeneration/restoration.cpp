@@ -211,8 +211,6 @@ IplImage* LinearRegression(IplImage* src) {
 
 	double inversey[N][N];
 	double y[N][N];
-	bool out = false;
-	bool ok = false;
 	for (int i = 0; i < src->height; i++) {
 		for (int j = 0; j < src->width; j++) {
 			CvScalar cs = cvGet2D(src, i, j);
@@ -223,20 +221,12 @@ IplImage* LinearRegression(IplImage* src) {
 			}
 			if (flag) {
 
-				count = 0;
-				out = false;
 				for (t = 0; t < src->nChannels; t++) {
-					out = false;
 					count = 0;
 					if (cs.val[t] == 0) {
-						ok = false;
 						for (int m = -2; m <= 2; m++) {
 
-							if (out)
-								break;
 							for (int n = -2; n <= 2; n++) {
-								if (out)
-									break;
 								row = i + m;
 								col = j + n;
 
@@ -264,7 +254,6 @@ IplImage* LinearRegression(IplImage* src) {
 						//res矩阵求逆
 						bool isA = GetMatrixInverse(res, 3, inverse);
 						if (isA) {
-							ok = true;
 							//x_和像素值矩阵相乘得到inversey
 							matrixmultiply(b, y, 3, count, inversey);
 							//inverse和inversey相乘得到beta
@@ -297,6 +286,155 @@ IplImage* LinearRegression(IplImage* src) {
 			}
 			cvSet2D(dst, i, j, cs);
 		}
+		
+	}
+	return dst;
+}
+
+double norm(double a[2], double b[2]) {
+	return sqrt(pow(a[0] - b[0], 2) + pow(a[1] - b[1], 2));
+}
+
+double RBFKernel(double a[2], double b[2]) {
+	double gama = 10;
+
+	return exp(pow(norm(a, b),2)/(pow(2*gama,2)));
+}
+
+
+IplImage *GaussianRegression(IplImage*src) {
+	int row;
+	int col;
+	IplImage *dst = cvCreateImage(cvGetSize(src), src->depth, src->nChannels);
+	int t;
+	bool flag;
+	double points[N][2];
+	double pixels[N][N];
+	double K[N][N];
+	double res[N][N];
+	double Kinverse[N][N];
+	double avg[N][N];
+	int count = 0;
+	bool out;
+	int max = 0;
+	int min;
+	for (int i = 0; i < src->height; i++) {
+		for (int j = 0; j < src->width; j++) {
+			CvScalar cs = cvGet2D(src, i, j);
+			flag = false;
+			for (t = 0; t < src->nChannels; t++) {
+				if (cs.val[t] == 0) {
+					flag = true;
+					break;
+				}
+					
+			}
+			if (flag) {
+				out = false;
+				for (int t = 0; t < src->nChannels; t++) {
+					max = 0;
+					count = 0;
+					min = 999999;
+					for (int m = -2; m <= 2; m++) {
+						if (out)
+							break;
+						row = i + m;
+						for (int n = -2; n <= 2; n++) {
+							if (out)
+								break;
+							col = j + n;
+							
+							if (row >= 0 && row < src->height&&col >= 0 && col < src->width) {
+								CvScalar cv = cvGet2D(src, row, col);
+								if (cv.val[t] != 0) {
+									points[count][0] = row;
+									points[count][1] = col;
+									pixels[count][0] = cv.val[t];
+									if (max < pixels[count][0])
+										max = pixels[count][0];
+									if (min > pixels[count][0])
+										min = pixels[count][0];
+									count++;
+									if (count >= 4)
+									{
+										out = true;
+									}
+								}
+							}
+						}
+					}
+					//高斯回归，协方差矩阵构建
+					for (int num = 0; num < count; num++) {
+						for (int innum = num; innum < count; innum++) {
+							if (num == innum)
+								K[num][num] = 1.7;
+							else {
+								//RBF核函数
+								K[num][innum] = K[innum][num] = RBFKernel(points[num], points[innum]);
+							}
+						}
+					}
+					//计算预测点和其它点的核值
+					double Kstar[N][N];
+					double temp[2] = { i,j };
+					for (int cur = 0; cur < count; cur++) {
+						
+							
+							Kstar[0][cur] = RBFKernel(temp, points[cur]);
+						
+					}
+					
+					bool isA = GetMatrixInverse(K, count, Kinverse);
+					if (isA) {
+						matrixmultiply(Kstar, Kinverse, 1, count, res);
+						matrixmultiply(res, pixels, 1, 1, avg);
+						int temp = (int)avg[0][0];
+						if (max < temp)
+							cs.val[t] = max;
+						else if (min > temp) {
+							cs.val[t] = min;
+						}
+						else
+							cs.val[t] = temp;
+					}
+					else {
+						CvScalar cleft;
+						int left;
+						bool leftend = true;
+						for (left = 0; i - left >= 0; left++) {
+							cleft = cvGet2D(src, i - left, j);
+							if (cleft.val[t] != 0) {
+								leftend = false;
+								break;
+							}
+								
+						}
+						CvScalar cright;
+						int right;
+						bool rightend = true;
+						for (right = 0; right + i < src->width; right++) {
+							cright = cvGet2D(src, right + i, j);
+							if (cright.val[t] != 0) {
+								rightend = false;
+								break;
+							}
+						}
+						if(!leftend && !rightend)
+							cs.val[t] = (cleft.val[t] + cright.val[t]) / 2;
+						else if (leftend) {
+							cs.val[t] = cright.val[t];
+						}
+						else {
+							cs.val[t] = cleft.val[t];
+						}
+					}
+					
+					cvSet2D(dst, i, j, cs);
+				}
+				
+			}
+			
+		}
 	}
 	return dst;
 }
@@ -304,11 +442,9 @@ IplImage* LinearRegression(IplImage* src) {
 
 
 
-
-
 int main() {
 
-	IplImage* img = cvLoadImage("data/B.png", -1);
+	IplImage* img = cvLoadImage("data/A.png", -1);
 	cvShowImage("origin", img);
 	bool flag = true;
 	int k;
@@ -321,6 +457,6 @@ int main() {
 	IplImage*res = LinearRegression(img);
 
 	cvShowImage("after", res);
-	cvSaveImage("tesB.png", res);
+	cvSaveImage("LinearB.png", res);
 	waitKey(0);
 }

@@ -3,7 +3,8 @@ d:\opencv\build\include\opencv2\core\mat.hpp(1965): warning C4819: 该文件包�
 d:\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\人工智能\imageregeneration\regeneration\regeneration\restoration.cpp(314): warning C4101: “k”: 未引用的局部变量
-d:\人工智能\imageregeneration\regeneration\regeneration\restoration.cpp(317): warning C4101: “t”: 未引用的局部变量
-  Regeneration.vcxproj -> D:\人工智能\ImageRegeneration\Regeneration\x64\Debug\Regeneration.exe
-  Regeneration.vcxproj -> D:\人工智能\ImageRegeneration\Regeneration\x64\Debug\Regeneration.pdb (Full PDB)
+d:\人工智能\imageregeneration\regeneration\regeneration\restoration.cpp(361): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+d:\人工智能\imageregeneration\regeneration\regeneration\restoration.cpp(363): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+d:\人工智能\imageregeneration\regeneration\regeneration\restoration.cpp(386): warning C4838: 从“int”转换到“double”需要收缩转换
+d:\人工智能\imageregeneration\regeneration\regeneration\restoration.cpp(457): warning C4101: “k”: 未引用的局部变量
+d:\人工智能\imageregeneration\regeneration\regeneration\restoration.cpp(460): warning C4101: “t”: 未引用的局部变量
